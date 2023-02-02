@@ -9,12 +9,61 @@
 }
 
 .button {
-    height: 50px;
-    width: 200px;
-    margin: -25px -100px;
+    background: white;
+    border: none;
+
     position: absolute;
     top: 50%;
     left: 50%;
-    font-size: 32px;
-    color: red;
+    transition: 0.5s;
+    transform: translate(-50%) scale(1);
+    
+    width: fit-content;
+    font-size: 40px;
+    padding: 0.5em;
+  
+    box-shadow: 
+    /* BASES AROUND (WHITE) */
+      -0.2em 0 white,     /* L */
+      0 -0.2em white,     /* U */
+      0.1em 0 white,      /* R */
+      0 0.1em white,      /* D */
+  
+    /* BASES AROUND (BLACK) */
+      -0.3em 0,
+      0 -0.3em,
+      0.3em 0,
+      0 0.3em,
+  
+    /* TOP LEFT */
+      -0.1em -0.2em white,
+      -0.2em -0.1em white,
+      -0.1em -0.3em,
+      -0.3em -0.1em,
+    
+    /* TOP RIGHT */
+      0.1em -0.1em white,
+  
+    /* BOTTOM RIGHT */
+  
+  
+    /* BOTTOM LEFT */
+      -0.1em 0.1em white,
+  
+    /* EDGES */
+      -0.2em -0.2em,
+  
+      0.2em -0.1em,
+      0.1em -0.2em,
+  
+      0.2em 0.2em,
+  
+      -0.2em 0.1em,
+      -0.1em 0.2em
+    ;
+}
+
+.button:hover {
+  transition: 0.5s;
+  transform: translate(-50%) scale(1.1);
 }

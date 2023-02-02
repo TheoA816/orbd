@@ -244,7 +244,6 @@ const Game = ({ plControls, menu, setMenu }) => {
       {/* CANVAS */}
       <Canvas camera={{position: [0, 50, 30]}}>
         <ambientLight color={0xFFFFFF}/>
-        <pointLight args={[0xFFFFFF, 1]} position={[0, 135, 0]}/>
         <Background/>
 
         <group ref={starsRef}>{loadedStars}</group>
@@ -268,7 +267,7 @@ const Game = ({ plControls, menu, setMenu }) => {
       </Canvas>
 
       {/* BUTTONS */}
-      { !playing && !win && <PlayButton onClick={() => plControls.current.lock()} text={"Continue"} /> }
+      { !playing && !win && !menu && <PlayButton onClick={() => plControls.current.lock()} text={"Continue"} /> }
       { win && <Results onClick={restartGame} times={timeRef} /> }
     </>
   )

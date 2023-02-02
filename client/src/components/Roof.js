@@ -67,7 +67,7 @@ const Roof = ({ rotate }) => {
     const size = new Vector3().subVectors(bbox.max, bbox.min); // we'll use it to get normalized positions of vertices in faces of geometry
 
     let vertex = new Vector3(), normalized = new Vector3(), normalizedY = 0, color = new Color();
-    const green = new Color(0x7FF234), blue = new Color(0x167BE7);
+    const col1 = new Color(0xF0A3AE), col2 = new Color(0xFCF9C6);
     
     for (let i = 0; i < count; i++){
       
@@ -76,7 +76,7 @@ const Roof = ({ rotate }) => {
       }
       
       normalizedY = normalized.subVectors(vertex, bbox.min).divide(size).y; // we'll use the normalized Y-coordinate
-      color = green.clone().lerp(blue, normalizedY);
+      color = col1.clone().lerp(col2, normalizedY);
       
       // every column 17 vectors
       // for (let idx = i; idx < count * 3; idx += count) {

@@ -1,7 +1,7 @@
 const Background = () => {
 
   return (
-    <color attach={"background"} args={[0xE8EDEA]}/>
+    <color attach={"background"} args={[0xC8DFF0]}/>
   )
 }
 

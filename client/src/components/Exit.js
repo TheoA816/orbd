@@ -1,12 +1,15 @@
-import { useFrame } from '@react-three/fiber';
+import { useFrame, useLoader } from '@react-three/fiber';
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { DoubleSide } from 'three';
+import { DoubleSide, TextureLoader } from 'three';
+import Galaxy from '../assets/galaxy.jpg';
 
 const Exit = () => {
 
   const exit = useRef();
   const scale = 10;
   const [scaled, setScaled] = useState(false);
+
+  // const texture = useLoader(TextureLoader, Galaxy);
 
   const [MAP_RADIUS, MAP_HEIGHT] =
   useMemo(() => {
@@ -25,8 +28,8 @@ const Exit = () => {
       console.log(exit.current.scale)
       if (exit.current.scale.x < scale || exit.current.scale.y < scale) {
         exit.current.scale.set(
-          exit.current.scale.x + 0.05,
-          exit.current.scale.y + 0.05,
+          exit.current.scale.x + 0.1,
+          exit.current.scale.y + 0.1,
           1
         )
       } else {
