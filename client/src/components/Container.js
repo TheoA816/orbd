@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react'
-import { DoubleSide, Path, Shape } from 'three';
+import { BackSide, DoubleSide, FrontSide, Path, Shape } from 'three';
 
 const Container = () => {
   
@@ -48,7 +48,7 @@ const Container = () => {
         thickness={0.5}
         transmission={1}
       /> */}
-      <meshBasicMaterial transparent={true} opacity={0.7} side={DoubleSide}/>
+      <meshBasicMaterial transparent={true} opacity={0.4} side={DoubleSide}/>
     </mesh>
   )
 }

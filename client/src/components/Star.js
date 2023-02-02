@@ -8,7 +8,7 @@ const Star = ({ x, y, z }) => {
 
   useEffect(() => {
     // set bounding sphere's position to that of object
-    star.current.material.color.set(0x000000);
+    star.current.material.color.set(0x48474A);
     star.current.geometry.computeBoundingSphere();
   }, [x, y, z])
 

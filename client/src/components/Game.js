@@ -188,7 +188,7 @@ const Game = ({ plControls, menu, setMenu }) => {
 
         for ( let i = 0; i < intersections.length; i ++ ) {
           const star = intersections[i];
-          star.material.color.set( 0xFFFFFF );
+          star.material.color.set( 0xE57065 );
           const uuid = star.uuid;
           getTouchedStars();
           touchedStars.current.add(uuid);
