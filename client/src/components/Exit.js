@@ -37,7 +37,7 @@ const Exit = () => {
 
   return (
     <mesh ref={exit}>
-      <circleGeometry args={[MAP_RADIUS / scale]}/>
+      <circleGeometry args={[MAP_RADIUS / scale, 360]}/>
       <meshBasicMaterial color={"black"} side={DoubleSide}/>
       { !scaled && <Scale/> }
     </mesh>
