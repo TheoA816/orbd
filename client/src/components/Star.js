@@ -4,7 +4,6 @@ import  { useEffect, useRef } from 'react'
 const Star = ({ x, y, z }) => {
 
   const star = useRef();
-  console.log("STAR BRO")
 
   useEffect(() => {
     // set bounding sphere's position to that of object

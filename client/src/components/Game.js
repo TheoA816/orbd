@@ -10,14 +10,17 @@ import PlayButton from "./playbutton/PlayButton";
 import Entry from "./Entry";
 import Exit from "./Exit";
 import Results from "./results/Results";
+import Menu from "./menu/Menu";
+import Pause from "./pause/Pause";
 
-const Game = ({ plControls, menu, setMenu }) => {
+const Game = () => {
 
   // INIT AND FUNCTIONS
   const [playing, setPlaying] = useState(false);
   const [portal, setPortal] = useState(false);
   const [win, setWin] = useState(false);
   const [game, setGame] = useState(1);
+  const [menu, setMenu] = useState(true);
   
   const timeRef = useRef({
     start: 0,
@@ -25,6 +28,7 @@ const Game = ({ plControls, menu, setMenu }) => {
   });
 
   const starsRef = useRef();
+  const plControls = useRef();
   const touchedStars = useRef(null);
 
   const getTouchedStars = () => {
@@ -267,7 +271,8 @@ const Game = ({ plControls, menu, setMenu }) => {
       </Canvas>
 
       {/* BUTTONS */}
-      { !playing && !win && !menu && <PlayButton onClick={() => plControls.current.lock()} text={"Continue"} /> }
+      { menu && <Menu plControls={plControls} /> }
+      { !playing && !win && !menu && <Pause plControls={plControls} /> }
       { win && <Results onClick={restartGame} times={timeRef} /> }
     </>
   )

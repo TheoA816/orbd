@@ -1,7 +1,6 @@
-import { useFrame, useLoader } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { DoubleSide, TextureLoader } from 'three';
-import Galaxy from '../assets/galaxy.jpg';
+import { DoubleSide } from 'three';
 
 const Exit = () => {
 
@@ -21,11 +20,10 @@ const Exit = () => {
   useEffect(() => {
     exit.current.rotateX( Math.PI / 2 );
     exit.current.position.set( 0, MAP_HEIGHT, 0 );
-  }, [])
+  }, [MAP_HEIGHT])
 
   const Scale = () => {
     useFrame(() => {
-      console.log(exit.current.scale)
       if (exit.current.scale.x < scale || exit.current.scale.y < scale) {
         exit.current.scale.set(
           exit.current.scale.x + 0.1,

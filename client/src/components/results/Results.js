@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import PlayButton from '../playbutton/PlayButton';
 import styles from './Results.module.css';
 
 const Results = ({ onClick, times }) => {
@@ -57,15 +58,16 @@ const Results = ({ onClick, times }) => {
 
   return (
     <>
-      <div className={styles.bg}></div>
-      <div className={styles.container}>
-        <span className={styles.time}>
-          <span className={styles.sec}>{pad(secIncr)}</span>
-          <span>:</span>
-          <span className={styles.ms}>{pad(msIncr, 3)}</span>
-        </span>
-        {showPb && <span className={styles.pb}>{newPb ? "New Personal Best" : "PB: " + pb / 1000.0}</span>}
-        {showBtn && <button className={styles.btn} onClick={onClick}>Restart</button>}
+      <div className={styles.bg}>
+        <div className={styles.container}>
+          <span className={styles.time}>
+            <span className={styles.sec}>{pad(secIncr)}</span>
+            <span>:</span>
+            <span className={styles.ms}>{pad(msIncr, 3)}</span>
+          </span>
+          { showPb && <span className={styles.pb}>{newPb ? "New Personal Best" : "PB: " + pb / 1000.0}</span> }
+          { showBtn && <PlayButton onClick={onClick} text={"Restart"} /> }
+        </div>
       </div>
     </>
   )

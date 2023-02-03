@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react'
-import { BackSide, DoubleSide, FrontSide, Path, Shape } from 'three';
+import { DoubleSide, Path, Shape } from 'three';
 
 const Container = () => {
   
