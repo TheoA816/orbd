@@ -2,11 +2,10 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls, PointerLockControls, Stats } from '@react-three/drei';
 import { useEffect, useMemo, useRef, useState } from "react";
 import Star from "./Star";
-import { Vector3, MathUtils, Sphere } from "three";
+import { Vector3, MathUtils, Sphere, Color, Clock } from "three";
 import Background from "./Background";
 import Roof from "./Roof";
 import Container from "./Container";
-import PlayButton from "./playbutton/PlayButton";
 import Entry from "./Entry";
 import Exit from "./Exit";
 import Results from "./results/Results";
@@ -17,7 +16,7 @@ const Game = () => {
 
   // INIT AND FUNCTIONS
   const [playing, setPlaying] = useState(false);
-  const [portal, setPortal] = useState(false);
+  const [exit, setExit] = useState(false);
   const [win, setWin] = useState(false);
   const [game, setGame] = useState(1);
   const [menu, setMenu] = useState(true);
@@ -28,6 +27,7 @@ const Game = () => {
   });
 
   const starsRef = useRef();
+  const containerRef = useRef();
   const plControls = useRef();
   const touchedStars = useRef(null);
 
@@ -41,7 +41,7 @@ const Game = () => {
   const restartGame = () => {
     setMenu(true);
     touchedStars.current = null;
-    setPortal(false);
+    setExit(false);
     setWin(false);
     setGame(game => game + 1);
   }
@@ -55,9 +55,11 @@ const Game = () => {
     return [STAR_COUNT, MAP_RADIUS, INNER_RADIUS, MAP_HEIGHT];
   }, [])
 
-  // POINTER LOCK
+  // EVENT LISTENERS
   const EventListeners = () => {
     const { camera } = useThree();
+    // set initial menu camera position
+    if (menu) camera.position.set(100, 50, 100);
     // lock
     useEffect(() => {
       const onLock = () => {
@@ -114,6 +116,7 @@ const Game = () => {
   const direction = new Vector3();
   const yAxis = new Vector3();
   const sphere = new Sphere();
+  const clock = useMemo(() => new Clock(), []);
   
   // MOVEMENT EVENT LISTENERS AND STATES
   const [forward, setForward] = useState(false);
@@ -178,7 +181,8 @@ const Game = () => {
 
       const camera = plControls.current.getObject();
 
-      if (!portal) {
+      // calculate intersection w orbs
+      if (!exit) {
 
         const intersections = [];
         
@@ -197,11 +201,12 @@ const Game = () => {
           getTouchedStars();
           touchedStars.current.add(uuid);
           if (touchedStars.current.size === STAR_COUNT) {
-            setPortal(true);
+            setExit(true);
           }
         }
       } 
       
+      // win condition
       else {
         if (camera.position.y > MAP_HEIGHT) {
           setWin(true);
@@ -210,6 +215,7 @@ const Game = () => {
         };
       }
       
+      // movement
       const delta = ( time - prevTime ) / 60;
       camera.getWorldDirection(direction);
       direction.normalize();
@@ -233,6 +239,20 @@ const Game = () => {
 
       yAxis.set(0, camera.position.y, 0);
 
+      // warning if too close to boundary
+      const startColor = new Color(0xFFFFFF);
+      const endColor = new Color(0xFF6242);
+      const container = containerRef.current.children[0];
+
+      if (camera.position.distanceTo(yAxis) > INNER_RADIUS - 15) {
+        const t = clock.getElapsedTime();
+        const s = Math.sin(t * 5.0) * 0.5 + 0.5;
+        container.material.color.copy(startColor).lerpHSL(endColor, s);
+      } else {
+        container.material.color.copy(startColor);
+      }
+
+      // reset if out of bounds
       if (camera.position.distanceTo(yAxis) > INNER_RADIUS) {
         direction.set(0, -10, 0);
         camera.position.lerp(direction, 1);
@@ -252,8 +272,8 @@ const Game = () => {
 
         <group ref={starsRef}>{loadedStars}</group>
         <Roof rotate={false}/>
-        { portal && <Exit/> }
-        <Container/>
+        { exit && <Exit/> }
+        <group ref={containerRef}><Container/></group>
         <Entry />
         <Roof rotate={true}/>
 
