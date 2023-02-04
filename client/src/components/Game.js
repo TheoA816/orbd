@@ -11,6 +11,7 @@ import Exit from "./Exit";
 import Results from "./results/Results";
 import Menu from "./menu/Menu";
 import Pause from "./pause/Pause";
+import Instructions from "./instructions/Instructions";
 
 const Game = () => {
 
@@ -20,6 +21,7 @@ const Game = () => {
   const [win, setWin] = useState(false);
   const [game, setGame] = useState(1);
   const [menu, setMenu] = useState(true);
+  const [instructions, setInstructions] = useState(true);
   
   const timeRef = useRef({
     start: 0,
@@ -258,6 +260,12 @@ const Game = () => {
         camera.position.lerp(direction, 1);
         camera.lookAt(0, 0, 0);
       }
+
+      // show instructions
+      console.log(instructions)
+      if (camera.position.y > 0) {
+        setInstructions(false);
+      }
     }
 
     prevTime = time;
@@ -290,7 +298,8 @@ const Game = () => {
         <Stats/>
       </Canvas>
 
-      {/* BUTTONS */}
+      {/* BUTTONS AND INSTRUCTIONS */}
+      { instructions && playing && <Instructions/> }
       { menu && <Menu plControls={plControls} /> }
       { !playing && !win && !menu && <Pause plControls={plControls} /> }
       { win && <Results onClick={restartGame} times={timeRef} /> }
