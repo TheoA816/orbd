@@ -1,7 +1,6 @@
 import styles from './Instructions.module.css';
 
 const Instructions = () => {
-  console.log("HERE")
   return (
     <div className={styles.container}>
       <span>Move WASD</span>
