@@ -1,0 +1,19 @@
+.container {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    padding: 1vh 2vh;
+    border-bottom-left-radius: 0.35em;
+
+    font-size: 2em;
+
+    transition: 0.5s;
+}
+
+.container:hover {
+    transition: 0.5s;
+    transform: scale(1.1);
+
+    background-color: #f2f5fc;
+}
