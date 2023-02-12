@@ -1,7 +1,7 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import { getUserByToken } from './db';
-import { register, login } from './auth';
+import { register, login } from './authHelper';
 
 const router = express.Router();
 

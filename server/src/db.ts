@@ -20,6 +20,7 @@ export {
   updateToken
 }
 
+// QUERIES
 const getUserByEmail = (email: string): Promise<null | User> => {
   const res = pool
     .query(`SELECT * FROM Users WHERE email ~* ('^' || $1 || '$')`, [email])
@@ -62,24 +63,38 @@ const getUserByToken = (token: string): Promise<null | User> => {
   return res;
 }
 
-/**
- * 
- * @param username 
- * @param email 
- * @param password
- * assumes a valid username / email / password will be supplied
- */
+const registerUser = async (username: string, email: string, password: string, salt: string, refreshToken: string) => {
+  const id = await pool.
+    query(`
+      INSERT INTO Users (username, email, password, salt, refreshToken) 
+      VALUES ($1, $2, $3, $4, $5) RETURNING id`, 
+    [username, email, password, salt, refreshToken])
+    .then((res) => { return res.rows[0].id })
+    .catch(err => console.log(err))
 
-const registerUser = (username: string, email: string, password: string, salt: string, refreshToken: string) => {
-  return pool.
-    query(`INSERT INTO Users (username, email, password, salt, refreshToken) VALUES ($1, $2, $3, $4, $5)`, [username, email, password, salt, refreshToken])
+  await pool.
+  query(`INSERT INTO Stats (id, best_time, plays) VALUES ($1, $2, $3)`, [id, null, 0])
+  .then(res => console.log(res))
+  .catch(err => console.log(err))
+}
+
+const updateToken = async (refreshToken: string, email: string) => {
+  await pool.
+    query(`UPDATE Users SET refreshToken = $1 WHERE email = $2`, [refreshToken, email])
     .then(res => console.log(res))
     .catch(err => console.log(err))
 }
 
-const updateToken = (refreshToken: string, email: string) => {
-  return pool.
-    query(`UPDATE Users SET refreshToken = $1 WHERE email = $2`, [refreshToken, email])
+const updateStats = (email: string, best_time: number) => {
+  pool.
+    query(`
+      UPDATE S
+        SET S.plays = S.plays + 1,
+        S.best_time = $2
+      FROM Stats S JOIN Users U
+        ON S.id = U.id
+      WHERE U.email = $1`,
+    [email, best_time])
     .then(res => console.log(res))
     .catch(err => console.log(err))
 }
