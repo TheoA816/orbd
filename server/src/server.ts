@@ -1,10 +1,13 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import { authRouter } from './authRoutes';
+import cors from 'cors';
+import { corsOptionsDelegate } from '../config/corsOptions';
 
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors(corsOptionsDelegate));
 
 app.use('/', authRouter);
 

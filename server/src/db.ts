@@ -55,6 +55,7 @@ const getUserByToken = (token: string): Promise<null | User> => {
     .then((res) => {
       // should only return one result if exists
       if (res.rows.length !== 1) {
+        console.log(res.rows)
         return null;
       }
       return res.rows[0];

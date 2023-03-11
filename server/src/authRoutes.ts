@@ -38,6 +38,7 @@ router.post('/login', async (req, res, next) => {
 router.post('/prelogin', async (req, res, next) => {
   try {
     const token = req.cookies.jwt;
+    console.log(token);
     if (token === undefined) {
       res.status(401).json({ error: "token has expired" });
       return;
@@ -55,8 +56,8 @@ router.post('/prelogin', async (req, res, next) => {
             res.status(403).json({ error: "user details altered - forbidden" });
             return;
           }
-          res.cookie('jwt', token.refreshToken, { maxAge: 3 * 24 * 60 * 60 * 1000, httpOnly: true });
-          res.json(token);
+          res.cookie('jwt', token, { maxAge: 3 * 24 * 60 * 60 * 1000, httpOnly: true });
+          res.json({ refreshToken: token });
       }
   )
   } catch (err) {

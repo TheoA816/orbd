@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE TABLE IF NOT EXISTS stats (
-    id SERIAL PRIMARY KEY,
+    id INT NOT NULL PRIMARY KEY,
     best_time NUMERIC(2, 3),
     plays INTEGER,
     FOREIGN KEY (id) references users (id)

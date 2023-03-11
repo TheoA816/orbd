@@ -12,7 +12,7 @@ import Results from "./results/Results";
 import Menu from "./menu/Menu";
 import Pause from "./pause/Pause";
 import Instructions from "./instructions/Instructions";
-import PlayerStats from "./stats/PlayerStats";
+import Player from "./player/Player";
 
 const Game = () => {
 
@@ -304,7 +304,7 @@ const Game = () => {
       { menu && <Menu plControls={plControls} /> }
       { !playing && !win && !menu && <Pause plControls={plControls} /> }
       { win && <Results onClick={restartGame} times={timeRef} /> }
-      { !playing && <PlayerStats />}
+      { !playing && <Player />}
     </>
   )
 }
