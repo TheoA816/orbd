@@ -4,6 +4,7 @@ import { Alert } from "@mui/material";
 import { axiosCustom } from '../../config/axios';
 import { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
+import { FaHome } from 'react-icons/fa';
 
 const Login = () => {
 
@@ -41,6 +42,7 @@ const Login = () => {
     
   return (
     <>
+      <Link to={`/`}><FaHome className={styles.icon}/></Link>
       {success ? 
         <Navigate to={`/`}/>
       : 
