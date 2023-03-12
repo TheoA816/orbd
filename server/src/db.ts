@@ -17,10 +17,14 @@ export {
   getUserByUsername,
   getUserByToken,
   registerUser,
-  updateToken
+  updateToken,
+  getStats,
+  updateStats
 }
 
 // QUERIES
+
+////////////////////////////////////// GETTERS /////////////////////////////////
 const getUserByEmail = (email: string): Promise<null | User> => {
   const res = pool
     .query(`SELECT * FROM Users WHERE email ~* ('^' || $1 || '$')`, [email])
@@ -64,6 +68,8 @@ const getUserByToken = (token: string): Promise<null | User> => {
   return res;
 }
 
+
+////////////////////////////////////// AUTH/// /////////////////////////////////
 const registerUser = async (username: string, email: string, password: string, salt: string, refreshToken: string) => {
   const id = await pool.
     query(`
@@ -86,12 +92,29 @@ const updateToken = async (refreshToken: string, email: string) => {
     .catch(err => console.log(err))
 }
 
-const updateStats = (email: string, best_time: number) => {
-  pool.
+
+////////////////////////////////////// STATS ///////////////////////////////////
+const getStats = async (id: number) => {
+  const res = await pool.
+    query(`
+      SELECT U.username, S.best_time, S.plays
+      FROM Stats S join Users U
+        ON S.id = U.id
+      WHERE id ~* ('^' || $1 || '$')`, [id])
+    .then(res => console.log(res))
+    .catch(err => console.log(err))
+  return res;
+}
+
+const updateStats = async (email: string, best_time: number) => {
+  await pool.
     query(`
       UPDATE S
-        SET S.plays = S.plays + 1,
-        S.best_time = $2
+      SET 
+        S.plays = S.plays + 1,
+        S.best_time = CASE WHEN $2 < S.best_time THEN $2
+                          ELSE S.best_time
+                      END,
       FROM Stats S JOIN Users U
         ON S.id = U.id
       WHERE U.email = $1`,

@@ -1,22 +1,27 @@
 import styles from './Player.module.css';
 import { axiosCustom } from '../../config/axios';
 import { FaUserAlt } from 'react-icons/fa';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Login from '../login/Login';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthProvider';
 
 const Player = () => {
 
   const [loggedIn, setLoggedIn] = useState(false);
-  const [stats, showStats] = useState(false);
+  const { setAccessToken } = useContext(AuthContext);
 
   useEffect(() => {
     const setLogin = async () => {
       const res = await axiosCustom.post("/prelogin");
-      (res.status === 200) ? setLoggedIn(true) : setLoggedIn(false);
+      if (res.status === 200) {
+        setLoggedIn(true);
+        setAccessToken(res.data);
+      } else { 
+        setLoggedIn(false);
+      }
     }
     setLogin();
-    showStats(false);
   }, [])
 
   return (
@@ -26,7 +31,9 @@ const Player = () => {
           <FaUserAlt className={styles.icon}/>
         </Link>
       :
+      <Link to={`stats`} >
         <FaUserAlt className={styles.icon}/>
+      </Link>
       }
     </>
   )

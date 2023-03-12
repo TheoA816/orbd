@@ -38,10 +38,16 @@ const register = async (username: string, email: string, password: string) => {
     process.env.REFRESH_TOKEN_SECRET,
     { expiresIn: "3d" }
   );
+
+  const accessToken = jwt.sign(
+    { email: email },
+    process.env.ACCESS_TOKEN_SECRET,
+    { expiresIn: "600s" }
+  )
   
   // register user
   await registerUser(username, email, hashed, salt, refreshToken);
-  return { refreshToken: refreshToken };
+  return { refreshToken: refreshToken, accessToken: accessToken };
 }
 
 const login = async (email: string, password: string) => {
@@ -74,6 +80,12 @@ const login = async (email: string, password: string) => {
     { expiresIn: "3d" }
   );
 
+  const accessToken = jwt.sign(
+    { email: email },
+    process.env.ACCESS_TOKEN_SECRET,
+    { expiresIn: "600s" }
+  )
+
   await updateToken(refreshToken, email);
-  return { refreshToken: refreshToken };
+  return { refreshToken: refreshToken, accessToken: accessToken };
 }

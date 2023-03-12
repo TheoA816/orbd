@@ -2,11 +2,13 @@ import styles from './Register.module.css';
 import { motion } from "framer-motion";
 import { Alert } from "@mui/material";
 import { axiosCustom } from '../../config/axios';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { FaHome } from 'react-icons/fa';
+import { AuthContext } from '../../context/AuthProvider';
 
 const Register = () => {
+
   const [inputs, setInputs] = useState({
     email: "",
     username: "",
@@ -16,6 +18,7 @@ const Register = () => {
 
   const [success, setSuccess] = useState(null);
   const [err, setErr] = useState('')
+  const { setAccessToken } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,7 +43,8 @@ const Register = () => {
       })
       .then(res => {
         setSuccess(true);
-        setInputs({ email: "", username: "", password: "", confirmpassword: "" })
+        setInputs({ email: "", username: "", password: "", confirmpassword: "" });
+        setAccessToken(res.data);
       })
       .catch(err => {
         setErr(err.response.data);

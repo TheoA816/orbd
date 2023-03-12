@@ -119,7 +119,7 @@ const Game = () => {
   const direction = new Vector3();
   const yAxis = new Vector3();
   const sphere = new Sphere();
-  const clock = useMemo(() => new Clock(), []);
+  const clock = new Clock();
   
   // MOVEMENT EVENT LISTENERS AND STATES
   const [forward, setForward] = useState(false);
