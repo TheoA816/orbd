@@ -1,7 +1,7 @@
 import styles from './Login.module.css';
 import { motion } from "framer-motion";
 import { Alert } from "@mui/material";
-import { axiosCustom } from '../../config/axios';
+import axios from '../../config/axios';
 import { useContext, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { FaHome } from 'react-icons/fa';
@@ -21,7 +21,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    axiosCustom
+    axios
       .post("/login", {
         email: inputs.email,
         password: inputs.password,

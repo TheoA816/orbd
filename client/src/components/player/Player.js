@@ -1,8 +1,7 @@
 import styles from './Player.module.css';
-import { axiosCustom } from '../../config/axios';
+import axios from '../../config/axios';
 import { FaUserAlt } from 'react-icons/fa';
 import { useContext, useEffect, useState } from 'react';
-import Login from '../login/Login';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthProvider';
 
@@ -13,15 +12,15 @@ const Player = () => {
 
   useEffect(() => {
     const setLogin = async () => {
-      console.log("HELLON PRELOGIN?")
-      const res = await axiosCustom.post("/prelogin");
-      console.log("PRELOGIN");
-      if (res.status === 200) {
+      console.log("HELLO PRELOGINN?")
+      try {
+        const res = await axios.post("/prelogin");
         setLoggedIn(true);
         setAccessToken(res.data);
-      } else { 
+      } catch {
         setLoggedIn(false);
       }
+      console.log("PRELOGIN")
     }
     setLogin();
   }, [])

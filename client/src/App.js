@@ -5,6 +5,7 @@ import Login from "./components/login/Login";
 import Register from "./components/register/Register";
 import Stats from "./components/stats/Stats";
 import useAxiosPrivate from "./config/useAxiosPrivate";
+import Player from "./components/player/Player";
 
 function App() {
 
@@ -18,7 +19,7 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Game />,
+      element: <Player />,
     },
     {
       path: "login",

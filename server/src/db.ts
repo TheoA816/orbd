@@ -81,14 +81,14 @@ const registerUser = async (username: string, email: string, password: string, s
 
   await pool.
   query(`INSERT INTO Stats (id, best_time, plays) VALUES ($1, $2, $3)`, [id, null, 0])
-  .then(res => console.log(res))
+  .then(res => "\nREGISTERED\n")
   .catch(err => console.log(err))
 }
 
 const updateToken = async (refreshToken: string, email: string) => {
   await pool.
     query(`UPDATE Users SET refreshToken = $1 WHERE email = $2`, [refreshToken, email])
-    .then(res => console.log(res))
+    .then(res => console.log("\nLOGGED IN\n"))
     .catch(err => console.log(err))
 }
 

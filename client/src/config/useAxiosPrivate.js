@@ -1,14 +1,18 @@
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthProvider";
-import { axiosCustom } from "./axios";
+import axios, { axiosCustom } from "./axios";
 
 const useAxiosPrivate = () => {
   
   const { accessToken, setAccessToken } = useContext(AuthContext);
 
   const refresh = async () => {
-    const res = await axiosCustom.post("/prelogin");
-    return (res.status === 200) ?  res.data : null;
+    try {
+      const res = await axios.post("/prelogin");
+      return res.data;
+    } catch {
+      return null;
+    }
   }
   
   useEffect(() => {
@@ -28,6 +32,7 @@ const useAxiosPrivate = () => {
         async (error) => {
 
           const prevRequest = error?.config;
+          
           if (error?.response?.status !== 200 && !prevRequest?.sent) {
 
             prevRequest.sent = true;
@@ -35,11 +40,11 @@ const useAxiosPrivate = () => {
             const newAccessToken = await refresh();
             if (newAccessToken === null) return Promise.reject(error);
             setAccessToken(newAccessToken);
-            console.log("PREVIOUS = "  + prevRequest.headers['Authorization'])
-            console.log("NEW = " + newAccessToken)
             prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+
             return axiosCustom(prevRequest);
           }
+          
           return Promise.reject(error);
         }
       );

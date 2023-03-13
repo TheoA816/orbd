@@ -24,8 +24,6 @@ router.get('/stats', async (req, res, next) => {
       return;
     }
     const stats = await getStats(user.id);
-    console.log("RES = ");
-    console.log(stats);
     res.json(stats);
 })
 
