@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import useAxiosPrivate from '../../config/useAxiosPrivate';
 import PlayButton from '../playbutton/PlayButton';
 import styles from './Results.module.css';
 
@@ -10,15 +11,47 @@ const Results = ({ onClick, times }) => {
   const [secIncr, setSecIncr] = useState(0);
   const [msIncr, setMsIncr] = useState(0);
 
-  const [pb, setPb] = useState(Number(localStorage.getItem("pb")));
+  const [pb, setPb] = useState(0);
   const [newPb, setNewPb] = useState(false);
   const [showPb, setShowPb] = useState(false);
   const [showBtn, setShowBtn] = useState(false);
+
+  const axiosPrivate = useAxiosPrivate();
 
   const pad = (n, z) => {
     z = z || 2;
     return ('00' + n).slice(-z);
   }
+
+  // set seconds and milliseconds and find pb
+  useEffect(() => {
+    const updatePb = async () => {
+
+      let best_time;
+      try {
+        const stats = await axiosPrivate.get('/user/stats');
+        best_time = stats.data.best_time;
+        if (best_time !== null) setPb(best_time);
+        else best_time = -1;
+      } catch {
+        best_time = -1;
+      }
+      
+      const roundTime = times.current.end - times.current.start;
+      console.log(roundTime + " " + pb)
+      setNewPb(false);
+      setSec(Math.floor(roundTime / 1000));
+      setMs(roundTime % 1000);
+      
+      if (best_time < 0 || roundTime < best_time) {
+        setPb(roundTime);
+        setNewPb(true);
+      }
+
+      await axiosPrivate.post('/user/update', { best_time: roundTime });
+    }
+    updatePb();
+  }, [times, axiosPrivate])
 
   // set stopwatch effect result
   useEffect(() => {
@@ -42,19 +75,6 @@ const Results = ({ onClick, times }) => {
       });
     }
   }, [msIncr])
-
-  // set seconds and milliseconds and find pb
-  useEffect(() => {
-    const roundTime = times.current.end - times.current.start;
-    setNewPb(false);
-    if (pb === 0 || roundTime < pb) {
-      setPb(roundTime);
-      setNewPb(true);
-      localStorage.setItem("pb", roundTime);
-    }
-    setSec(Math.floor(roundTime / 1000));
-    setMs(roundTime % 1000)
-  }, [times])
 
   return (
     <>

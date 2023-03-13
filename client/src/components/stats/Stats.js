@@ -14,9 +14,7 @@ const Stats = () => {
   const { setAccessToken } = useContext(AuthContext);
 
   const onClick = async () => {
-    console.log("SIGNING OUT")
     await axiosPrivate.post('/user/signout');
-    console.log("SIGNED OUT")
     setAccessToken('');
     navigate('/');
   }

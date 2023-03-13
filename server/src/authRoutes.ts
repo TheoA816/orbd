@@ -50,8 +50,7 @@ router.post('/prelogin', async (req, res, next) => {
       res.status(401).json({ error: "token has expired" });
       return;
     }
-    console.log("\nREFRESH TOKEN = ")
-    console.log(token)
+    
     const user = await getUserByToken(token);
     if (user === null) {
       res.status(403).json({ error: "more or less than one user found - forbidden" });

@@ -19,7 +19,7 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Player />,
+      element: <Game />,
     },
     {
       path: "login",

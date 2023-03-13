@@ -12,7 +12,6 @@ const Player = () => {
 
   useEffect(() => {
     const setLogin = async () => {
-      console.log("HELLO PRELOGINN?")
       try {
         const res = await axios.post("/prelogin");
         setLoggedIn(true);
@@ -20,7 +19,6 @@ const Player = () => {
       } catch {
         setLoggedIn(false);
       }
-      console.log("PRELOGIN")
     }
     setLogin();
   }, [])

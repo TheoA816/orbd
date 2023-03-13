@@ -106,19 +106,18 @@ const getStats = (id: number): Promise<Stats> => {
   return res;
 }
 
-const updateStats = async (email: string, best_time: number) => {
+const updateStats = async (id: number, best_time: number) => {
   await pool.
     query(`
-      UPDATE S
+      UPDATE Stats
       SET 
-        S.plays = S.plays + 1,
-        S.best_time = CASE WHEN $2 < S.best_time THEN $2
-                          ELSE S.best_time
-                      END,
-      FROM Stats S JOIN Users U
-        ON S.id = U.id
-      WHERE U.email = $1`,
-    [email, best_time])
-    .then(res => { return res.rows[0] })
+        plays = plays + 1,
+        best_time = CASE WHEN ($2 < best_time) OR (best_time IS NULL) 
+                      THEN $2
+                      ELSE best_time
+                    END
+      WHERE id = $1`,
+    [id, best_time])
+    .then(res => console.log("\nUPDATES STATS\n"))
     .catch(err => console.log(err))
 }
