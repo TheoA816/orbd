@@ -13,7 +13,9 @@ const Player = () => {
 
   useEffect(() => {
     const setLogin = async () => {
+      console.log("HELLON PRELOGIN?")
       const res = await axiosCustom.post("/prelogin");
+      console.log("PRELOGIN");
       if (res.status === 200) {
         setLoggedIn(true);
         setAccessToken(res.data);

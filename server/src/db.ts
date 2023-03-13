@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-import { User } from '../interfaces';
+import { Stats, User } from '../interfaces';
 import { Pool } from 'pg';
 
 dotenv.config()
@@ -94,14 +94,14 @@ const updateToken = async (refreshToken: string, email: string) => {
 
 
 ////////////////////////////////////// STATS ///////////////////////////////////
-const getStats = async (id: number) => {
-  const res = await pool.
+const getStats = (id: number): Promise<Stats> => {
+  const res = pool.
     query(`
       SELECT U.username, S.best_time, S.plays
       FROM Stats S join Users U
         ON S.id = U.id
-      WHERE id ~* ('^' || $1 || '$')`, [id])
-    .then(res => console.log(res))
+      WHERE U.id = $1`, [id])
+    .then(res => { return res.rows[0] })
     .catch(err => console.log(err))
   return res;
 }
@@ -119,6 +119,6 @@ const updateStats = async (email: string, best_time: number) => {
         ON S.id = U.id
       WHERE U.email = $1`,
     [email, best_time])
-    .then(res => console.log(res))
+    .then(res => { return res.rows[0] })
     .catch(err => console.log(err))
 }

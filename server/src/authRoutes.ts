@@ -74,7 +74,7 @@ router.post('/prelogin', async (req, res, next) => {
             process.env.ACCESS_TOKEN_SECRET,
             { expiresIn: "600s" }
           )
-          console.log(accessToken);
+          
           res.json(accessToken);
       }
     )

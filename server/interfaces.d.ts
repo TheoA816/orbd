@@ -6,3 +6,9 @@ export interface User {
     salt: string,
     refreshToken: string
 }
+
+export interface Stats {
+    username: string,
+    best_time: number,
+    plays: number
+}

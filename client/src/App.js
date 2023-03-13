@@ -5,7 +5,6 @@ import Login from "./components/login/Login";
 import Register from "./components/register/Register";
 import Stats from "./components/stats/Stats";
 import useAxiosPrivate from "./config/useAxiosPrivate";
-import { useEffect } from "react";
 
 function App() {
 
@@ -13,7 +12,7 @@ function App() {
 
   const statsLoader = async () => {
     const statsRes = await axiosPrivate.get('user/stats');
-    return statsRes; 
+    return statsRes.data; 
   }
 
   const router = createBrowserRouter([

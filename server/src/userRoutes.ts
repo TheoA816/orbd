@@ -7,7 +7,8 @@ const router = express.Router();
 router.use(checkAccessToken);
 
 router.post('/signout', (req, res, next) => {
-    res.clearCookie('refreshToken', { httpOnly: true });
+    res.clearCookie('jwt', { httpOnly: true, path: '/', domain: 'localhost' });
+    res.sendStatus(204);
 })
 
 
@@ -23,7 +24,9 @@ router.get('/stats', async (req, res, next) => {
       return;
     }
     const stats = await getStats(user.id);
-    return stats;
+    console.log("RES = ");
+    console.log(stats);
+    res.json(stats);
 })
 
 export { router as userRouter }
