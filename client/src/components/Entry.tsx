@@ -5,7 +5,7 @@ const Entry = () => {
 
   const entry = useRef<Mesh>(null!);
 
-  const MAP_RADIUS = parseInt(process.env.REACT_APP_MAP_RADIUS!, 10) - 5;
+  const MAP_RADIUS = parseInt(import.meta.env.VITE_MAP_RADIUS!, 10) - 5;
   
   useEffect(() => {
     entry.current.rotateX( Math.PI / 2 );

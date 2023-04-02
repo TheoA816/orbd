@@ -8,8 +8,8 @@ const Exit = () => {
   const scale = 10;
   const [scaled, setScaled] = useState(false);
 
-  const MAP_RADIUS = parseInt(process.env.REACT_APP_MAP_RADIUS!, 10) - 5;
-  const MAP_HEIGHT = parseInt(process.env.REACT_APP_MAP_HEIGHT!, 10);
+  const MAP_RADIUS = parseInt(import.meta.env.VITE_MAP_RADIUS!, 10) - 5;
+  const MAP_HEIGHT = parseInt(import.meta.env.VITE_MAP_HEIGHT!, 10);
 
   useEffect(() => {
     exit.current.rotateX( Math.PI / 2 );

@@ -6,9 +6,9 @@ const Container = () => {
   const tube = useRef<Mesh>(null!);
 
   // Env Variables
-  const MAP_RADIUS = parseInt(process.env.REACT_APP_MAP_RADIUS!, 10);
+  const MAP_RADIUS = parseInt(import.meta.env.VITE_MAP_RADIUS!, 10);
   const INNER_RADIUS = MAP_RADIUS - 5;
-  const MAP_HEIGHT = parseInt(process.env.REACT_APP_MAP_HEIGHT!, 10);
+  const MAP_HEIGHT = parseInt(import.meta.env.VITE_MAP_HEIGHT!, 10);
 
   // Container Shape
   const shape = 
