@@ -1,9 +1,9 @@
-import { PointerLockControlsProps } from '@react-three/drei';
+import { PointerLockControls as PointerLockControlsImpl } from 'three-stdlib'
 import PlayButton from '../playbutton/PlayButton'
 import styles from './Pause.module.css';
 
 type pauseProps = {
-  plControls: React.MutableRefObject<PointerLockControlsProps>
+  plControls: React.MutableRefObject<PointerLockControlsImpl>
 }
 
 const Pause = ({ plControls }: pauseProps) => {

@@ -1,9 +1,9 @@
 import PlayButton from '../playbutton/PlayButton';
 import styles from './Menu.module.css';
-import { PointerLockControls, PointerLockControlsProps } from '@react-three/drei';
+import { PointerLockControls as PointerLockControlsImpl } from 'three-stdlib'
 
 type menuProps = {
-  plControls: React.MutableRefObject<PointerLockControlsProps>
+  plControls: React.MutableRefObject<PointerLockControlsImpl>
 }
 
 const Menu = ({ plControls }: menuProps) => {

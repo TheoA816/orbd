@@ -1,5 +1,6 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls, PointerLockControls, PointerLockControlsProps, Stats } from '@react-three/drei';
+import { PointerLockControls as PointerLockControlsImpl } from 'three-stdlib'
 import { useEffect, useMemo, useRef, useState } from "react";
 import Star from "./Star";
 import { Vector3, MathUtils, Sphere, Color, Clock, Camera, Group, Mesh, MeshStandardMaterial, MeshBasicMaterial } from "three";
@@ -35,7 +36,7 @@ const Game = () => {
 
   const starsRef = useRef<MeshGroup>(null!);
   const containerRef = useRef<MeshGroup>(null!);
-  const plControls = useRef<PointerLockControlsProps>(null!);
+  const plControls = useRef<PointerLockControlsImpl>(null!);
   const touchedStars = useRef<null | Set<any>>(null);
 
   const STAR_COUNT = parseInt(import.meta.env.VITE_STAR_COUNT!, 10);
@@ -77,9 +78,9 @@ const Game = () => {
         setMenu(false);
         setPlaying(true);
       }
-      plControls.current?.addEventListener?.('lock', onLock);
+      plControls.current.addEventListener?.('lock', onLock);
       return () => {
-        plControls.current?.removeEventListener?.('lock', onLock);
+        plControls.current.removeEventListener?.('lock', onLock);
       }
     }, [camera])
     // unlock
@@ -87,9 +88,9 @@ const Game = () => {
       const onUnlock = () => {
         setPlaying(false);
       }
-      plControls.current?.addEventListener?.('unlock', onUnlock);
+      plControls.current.addEventListener?.('unlock', onUnlock);
       return () => {
-        plControls.current?.removeEventListener?.('unlock', onUnlock);
+        plControls.current.removeEventListener?.('unlock', onUnlock);
       }
     }, [])
     // animate loop
@@ -185,7 +186,7 @@ const Game = () => {
 
     if ( playing ) {
 
-      const camera = plControls.current?.getObject?.() as Camera;
+      const camera = plControls.current.getObject?.() as Camera;
 
       // calculate intersection w orbs
       if (!exit) {
@@ -218,7 +219,7 @@ const Game = () => {
         if (camera.position.y > MAP_HEIGHT) {
           setWin(true);
           timeRef.current.end = new Date().getTime();
-          plControls.current?.unlock?.();
+          plControls.current.unlock?.();
         };
       }
       
@@ -237,11 +238,11 @@ const Game = () => {
       }
 
       if (right) {
-        plControls.current?.moveRight?.(delta);
+        plControls.current.moveRight?.(delta);
       }
 
       if (left) {
-        plControls.current?.moveRight?.(-delta);
+        plControls.current.moveRight?.(-delta);
       }
 
       yAxis.set(0, camera.position.y, 0);
