@@ -30,9 +30,11 @@ const Login = () => {
         setSuccess(true);
         setInputs({ email: "", password: "" });
         setAccessToken(res.data);
+        console.log("BRUH\n" );
       })
       .catch(err => {
-        setErr(err.response.data);
+        console.log("ERR " + err );
+        // setErr(err.response.data);
         setSuccess(false);
       })
   };
