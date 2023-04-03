@@ -10,7 +10,7 @@ const pool = new Pool({
   host: process.env.HOST,
   port: parseInt(process.env.PORTNUM),
   database: process.env.DBNAME,
-  ssl: true
+  ssl: { rejectUnauthorized: false }
 });
 
 export {
