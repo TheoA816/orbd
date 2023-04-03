@@ -16,7 +16,7 @@ router.post('/register', async (req, res, next) => {
       return;
     }
 
-    res.cookie('jwt', token.refreshToken, { maxAge: 3 * 24 * 60 * 60 * 1000, httpOnly: true });
+    res.cookie('jwt', token.refreshToken, { maxAge: 3 * 24 * 60 * 60 * 1000, httpOnly: true, secure: true });
     res.json(token.accessToken);
   } catch (err) {
     next(err);
@@ -34,7 +34,7 @@ router.post('/login', async (req, res, next) => {
       return;
     }
 
-    res.cookie('jwt', token.refreshToken, { maxAge: 3 * 24 * 60 * 60 * 1000, httpOnly: true });
+    res.cookie('jwt', token.refreshToken, { maxAge: 3 * 24 * 60 * 60 * 1000, httpOnly: true, secure: true });
     res.json(token.accessToken);
   } catch (err) {
     next(err);
@@ -68,7 +68,7 @@ router.post('/prelogin', async (req, res, next) => {
             return;
           }
 
-          res.cookie('jwt', token, { maxAge: 3 * 24 * 60 * 60 * 1000, httpOnly: true });
+          res.cookie('jwt', token, { maxAge: 3 * 24 * 60 * 60 * 1000, httpOnly: true, secure: true });
 
           const accessToken = jwt.sign(
             { email: user.email },
