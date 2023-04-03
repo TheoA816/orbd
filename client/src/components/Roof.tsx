@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react'
-import { BufferAttribute, Color, DoubleSide, GLBufferAttribute, InterleavedBufferAttribute, LatheGeometry, Mesh, Vector2, Vector3, } from 'three';
+import { BufferAttribute, Color, DoubleSide, LatheGeometry, Mesh, Vector2, Vector3, } from 'three';
 
 type roofProps = {
   rotate: boolean

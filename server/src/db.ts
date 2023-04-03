@@ -9,7 +9,8 @@ const pool = new Pool({
   password: process.env.PASSWORD,
   host: process.env.HOST,
   port: parseInt(process.env.PORT),
-  database: process.env.DBNAME
+  database: process.env.DBNAME,
+  ssl: true
 });
 
 export {
@@ -30,6 +31,8 @@ const getUserByEmail = (email: string): Promise<null | User> => {
     .query(`SELECT * FROM Users WHERE email ~* ('^' || $1 || '$')`, [email])
     .then((res) => {
       // should only return one result if exists
+      console.log(res.rows);
+      console.log(res.rows.length);
       if (res.rows.length === 0) {
         return null;
       }
