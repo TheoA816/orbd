@@ -57,8 +57,7 @@ const login = async (email: string, password: string) => {
   if (user === null) {
     return { error: "The email provided is not associated with any account" };
   }
-  console.log(user);
-  console.log(user.salt);
+  
   // Get salt
   let salt = user.salt;
 

@@ -3,12 +3,12 @@ import { Stats, User } from '../interfaces';
 import { Pool } from 'pg';
 
 dotenv.config()
-
+console.log(parseInt(process.env.PORT));
 const pool = new Pool({
   user: process.env.USER,
   password: process.env.PASSWORD,
   host: process.env.HOST,
-  port: parseInt(process.env.PORT),
+  port: parseInt(process.env.PORTNUM),
   database: process.env.DBNAME,
   ssl: true
 });
@@ -31,8 +31,6 @@ const getUserByEmail = (email: string): Promise<null | User> => {
     .query(`SELECT * FROM Users WHERE email ~* ('^' || $1 || '$')`, [email])
     .then((res) => {
       // should only return one result if exists
-      console.log(res.rows);
-      console.log(res.rows.length);
       if (res.rows.length === 0) {
         return null;
       }
