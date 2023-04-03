@@ -3,7 +3,7 @@ import { Stats, User } from '../interfaces';
 import { Pool } from 'pg';
 
 dotenv.config()
-console.log(parseInt(process.env.PORT));
+
 const pool = new Pool({
   user: process.env.USER,
   password: process.env.PASSWORD,
