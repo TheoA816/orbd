@@ -7,8 +7,8 @@ const router = express.Router();
 router.use(checkAccessToken);
 
 router.post('/signout', (req, res, next) => {
-    res.clearCookie('jwt', { httpOnly: true, path: '/', domain: 'localhost' });
-    res.sendStatus(204);
+    res.clearCookie('jwt', { httpOnly: true, path: '/', domain: 'localhost', maxAge: 0 })
+    res.status(204).end(() => next());
 })
 
 
@@ -38,8 +38,8 @@ router.post('/update', async (req, res, next) => {
     res.status(403).json({ error: "more or less than one user found - forbidden" });
     return;
   }
-  const { best_time } = req.body;
-  await updateStats(user.id, best_time);
+  const { best_time, plays } = req.body;
+  await updateStats(user.id, best_time, plays);
 })
 
 export { router as userRouter }

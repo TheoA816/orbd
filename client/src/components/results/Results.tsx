@@ -36,9 +36,11 @@ const Results = ({ onClick, times }: resultsProps) => {
     const updatePb = async () => {
 
       let best_time;
+      let plays;
       try {
         const stats = await axiosPrivate.get('/user/stats');
         best_time = stats.data.best_time;
+        plays = stats.data.plays;
         if (best_time !== null) setPb(best_time);
         else best_time = -1;
       } catch {
@@ -56,7 +58,7 @@ const Results = ({ onClick, times }: resultsProps) => {
         setNewPb(true);
       }
 
-      await axiosPrivate.post('/user/update', { best_time: roundTime });
+      await axiosPrivate.post('/user/update', { best_time: roundTime, plays: plays + 1 });
     }
     updatePb();
   }, [times, axiosPrivate])

@@ -8,13 +8,14 @@ import { AuthContext } from '../../context/AuthProvider';
 const Player = () => {
 
   const [loggedIn, setLoggedIn] = useState(false);
-  const { setAccessToken } = useContext(AuthContext);
+  const { accessToken, setAccessToken } = useContext(AuthContext);
 
   useEffect(() => {
     const setLogin = async () => {
       try {
         const res = await axios.post("/prelogin");
         setLoggedIn(true);
+        console.log("PLAYER ACCESS TOKEN " + accessToken);
         setAccessToken(res.data);
       } catch {
         setLoggedIn(false);

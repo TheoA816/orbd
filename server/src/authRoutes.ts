@@ -46,6 +46,7 @@ router.post('/prelogin', async (req, res, next) => {
   try {
 
     const token = req.cookies.jwt;
+    console.log(token);
     if (token === undefined) {
       res.status(401).json({ error: "token has expired" });
       return;
