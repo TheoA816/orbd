@@ -1,13 +1,8 @@
 import { useEffect, useMemo, useRef } from 'react'
-import { BufferAttribute, Color, DoubleSide, LatheGeometry, Mesh, Vector2, Vector3, } from 'three';
+import { BufferAttribute, Color, DoubleSide, GLBufferAttribute, InterleavedBufferAttribute, LatheGeometry, Mesh, Vector2, Vector3, } from 'three';
 
 type roofProps = {
   rotate: boolean
-}
-
-type myBufferAttribute = BufferAttribute & {
-  color: BufferAttribute,
-  position: BufferAttribute
 }
 
 const Roof = ({ rotate }: roofProps) => {
@@ -52,57 +47,41 @@ const Roof = ({ rotate }: roofProps) => {
       return p;
     }, [])
 
-  // material color points - set to default color
-  const colors = 
-    useMemo(() => {
-      const color = new Color(0, 0, 0);
-      const c = [];
-      
-      // cannot dynamically get since reference hasnt loaded before render
-      const count = 6137;
-
-      for (let index = 0; index < count; index++) {
-        c.push(color.r, color.g, color.b);
-      }
-
-      return Float32Array.from(c);
-    }, [])
-
   // apply gradient color to each individual point
-  // useEffect(() => {
-  //   geom.current.computeBoundingBox();
-  //   const attributes = geom.current.attributes.position as myBufferAttribute;
+  useEffect(() => {
+    geom.current.computeBoundingBox();
+    const posAttr = geom.current.attributes.position as BufferAttribute;
 
-  //   const bbox = geom.current.boundingBox!;
-  //   const count = attributes.position.count * 3;
-  //   const positions = attributes.array;
-  //   const size = new Vector3().subVectors(bbox.max, bbox.min); // we'll use it to get normalized positions of vertices in faces of geometry
+    const bbox = geom.current.boundingBox!;
+    const count = posAttr.count * 3;
+    const positions = posAttr.array;
+    const size = new Vector3().subVectors(bbox.max, bbox.min); // we'll use it to get normalized positions of vertices in faces of geometry
 
-  //   let vertex = new Vector3(), normalized = new Vector3(), normalizedY = 0, color = new Color();
-  //   const col1 = new Color(0xF0A3AE), col2 = new Color(0xFCF9C6);
+    let vertex = new Vector3(), normalized = new Vector3(), normalizedY = 0, c = new Color();
+    const col1 = new Color(0xF0A3AE), col2 = new Color(0xFCF9C6);
+    const colors = new Array<number>(posAttr.count);
     
-  //   for (let i = 0; i < count; i++){
+    for (let i = 0; i < count; i++){
       
-  //     if (i % 3 === 0) {
-  //       vertex.set(positions[i], positions[i + 1], positions[i + 2]);
-  //     }
+      if (i % 3 === 0) {
+        vertex.set(positions[i], positions[i + 1], positions[i + 2]);
+      }
       
-  //     normalizedY = normalized.subVectors(vertex, bbox.min).divide(size).y; // we'll use the normalized Y-coordinate
-  //     color = col1.clone().lerp(col2, normalizedY);
+      normalizedY = normalized.subVectors(vertex, bbox.min).divide(size).y; // we'll use the normalized Y-coordinate
+      c = col1.clone().lerp(col2, normalizedY);
       
-  //     if (i % 3 === 0) attributes.color.array[i] = color.r;
-  //     else if (i % 3 === 1) attributes.color.array[i] = color.g;
-  //     else if (i % 3 === 2) attributes.color.array[i] = color.b;
-  //   }
+      if (i % 3 === 0) colors[i] = c.r;
+      else if (i % 3 === 1) colors[i] = c.g;
+      else if (i % 3 === 2) colors[i] = c.b;
+    }
     
-  //   attributes.color.needsUpdate = true;
-  // }, [])
+    const colAttr = new BufferAttribute(Float32Array.from(colors), 3);
+    geom.current.setAttribute('color', colAttr);
+  }, [])
 
   return (
     <mesh ref={top}>
-      <latheGeometry ref={geom} args={[points, 360]}>
-        <bufferAttribute attach="attributes-color" args={[colors, 3]} />
-      </latheGeometry>
+      <latheGeometry ref={geom} args={[points, 360]}/>
       <meshBasicMaterial vertexColors={true} side={DoubleSide}/>
     </mesh>
   )
