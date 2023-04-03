@@ -1,5 +1,5 @@
 const allowlist = [
-  "http://localhost:3000",
+  "https://orbd.onrender.com/",
   "http://localhost:5173"
 ];
 
