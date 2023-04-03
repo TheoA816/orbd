@@ -7,7 +7,7 @@ const router = express.Router();
 router.use(checkAccessToken);
 
 router.post('/signout', (req, res, next) => {
-    res.clearCookie('jwt', { httpOnly: true, secure: true, path: '/', domain: 'orbd.onrender.com', maxAge: 0 })
+    res.clearCookie('jwt', { httpOnly: true, secure: true, sameSite: 'none', path: '/', domain: 'orbd.onrender.com', maxAge: 0 })
     res.status(204).end(() => next());
 })
 
