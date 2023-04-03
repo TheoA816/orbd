@@ -1,0 +1,13 @@
+.icon {
+    position: absolute;
+    top: 2vh;
+    right: 1vw;
+    font-size: 2em;
+}
+
+/* .container:hover {
+    transition: 0.5s;
+    transform: scale(1.1);
+
+    background-color: #f2f5fc;
+} */
