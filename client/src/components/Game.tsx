@@ -1,26 +1,36 @@
+import { OrbitControls, PointerLockControls, Stats } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { OrbitControls, PointerLockControls, PointerLockControlsProps, Stats } from '@react-three/drei';
-import { PointerLockControls as PointerLockControlsImpl } from 'three-stdlib'
 import { useEffect, useMemo, useRef, useState } from "react";
-import Star from "./Star";
-import { Vector3, MathUtils, Sphere, Color, Clock, Camera, Group, Mesh, MeshStandardMaterial, MeshBasicMaterial } from "three";
+import {
+  Camera,
+  Clock,
+  Color,
+  Group,
+  MathUtils,
+  Mesh,
+  MeshBasicMaterial,
+  MeshStandardMaterial,
+  Sphere,
+  Vector3,
+} from "three";
+import { PointerLockControls as PointerLockControlsImpl } from "three-stdlib";
 import Background from "./Background";
-import Roof from "./Roof";
 import Container from "./Container";
 import Entry from "./Entry";
 import Exit from "./Exit";
-import Results from "./results/Results";
+import Roof from "./Roof";
+import Star from "./Star";
+import Instructions from "./instructions/Instructions";
 import Menu from "./menu/Menu";
 import Pause from "./pause/Pause";
-import Instructions from "./instructions/Instructions";
 import Player from "./player/Player";
+import Results from "./results/Results";
 
 type MeshGroup = Group & {
   children: Mesh[];
-}
+};
 
 const Game = () => {
-
   // INIT AND FUNCTIONS
   const [playing, setPlaying] = useState(false);
   const [exit, setExit] = useState(false);
@@ -28,10 +38,10 @@ const Game = () => {
   const [game, setGame] = useState(1);
   const [menu, setMenu] = useState(true);
   const [instructions, setInstructions] = useState(true);
-  
+
   const timeRef = useRef({
     start: 0,
-    end: 0
+    end: 0,
   });
 
   const starsRef = useRef<MeshGroup>(null!);
@@ -50,7 +60,7 @@ const Game = () => {
       touchedStars.current = new Set();
     }
     return touchedStars.current;
-  }
+  };
 
   // resets state for a new game
   const restartGame = () => {
@@ -58,9 +68,8 @@ const Game = () => {
     touchedStars.current = null;
     setExit(false);
     setWin(false);
-    setGame(game => game + 1);
-  }
-
+    setGame((game) => game + 1);
+  };
 
   // EVENT LISTENERS
   const EventListeners = () => {
@@ -77,22 +86,24 @@ const Game = () => {
         }
         setMenu(false);
         setPlaying(true);
-      }
-      plControls.current.addEventListener?.('lock', onLock);
+      };
+      const controls = plControls.current;
+      controls?.addEventListener?.("lock", onLock);
       return () => {
-        plControls.current.removeEventListener?.('lock', onLock);
-      }
-    }, [camera])
+        controls?.removeEventListener?.("lock", onLock);
+      };
+    }, [camera]);
     // unlock
     useEffect(() => {
       const onUnlock = () => {
         setPlaying(false);
-      }
-      plControls.current.addEventListener?.('unlock', onUnlock);
+      };
+      const controls = plControls.current;
+      controls?.addEventListener?.("unlock", onUnlock);
       return () => {
-        plControls.current.removeEventListener?.('unlock', onUnlock);
-      }
-    }, [])
+        controls?.removeEventListener?.("unlock", onUnlock);
+      };
+    }, []);
     // animate loop
     useFrame(() => {
       if (playing) {
@@ -100,21 +111,20 @@ const Game = () => {
       }
     });
     return null;
-  }
+  };
 
   // ARRAY OF STAR
-  const loadedStars =
-    useMemo(() => {
-      const stars = [];
-      for (let i = 0; i < STAR_COUNT; i++) {
-        const x = MathUtils.randFloatSpread(MAP_RADIUS);
-        const y = MathUtils.randFloat(5, MAP_HEIGHT - 20);
-        const z = MathUtils.randFloatSpread(MAP_RADIUS);
-        stars.push(<Star x={x} y={y} z={z} key={i}/>);
-      }
-      console.log(game)
-      return stars;
-    }, [MAP_HEIGHT, MAP_RADIUS, STAR_COUNT, game])
+  const loadedStars = useMemo(() => {
+    const stars = [];
+    for (let i = 0; i < STAR_COUNT; i++) {
+      const x = MathUtils.randFloatSpread(MAP_RADIUS);
+      const y = MathUtils.randFloat(5, MAP_HEIGHT - 20);
+      const z = MathUtils.randFloatSpread(MAP_RADIUS);
+      stars.push(<Star x={x} y={y} z={z} key={i} />);
+    }
+    console.log(game);
+    return stars;
+  }, [MAP_HEIGHT, MAP_RADIUS, STAR_COUNT, game]);
 
   // ANIMATION
 
@@ -124,87 +134,81 @@ const Game = () => {
   const yAxis = new Vector3();
   const sphere = new Sphere();
   const clock = new Clock();
-  
+
   // MOVEMENT EVENT LISTENERS AND STATES
   const [forward, setForward] = useState(false);
   const [backward, setBackward] = useState(false);
   const [right, setRight] = useState(false);
   const [left, setLeft] = useState(false);
-  
+
   useEffect(() => {
     const onKeydown = (e: KeyboardEvent) => {
       switch (e.code) {
-        case 'KeyW':
+        case "KeyW":
           setForward(true);
           break;
-        case 'KeyA':
+        case "KeyA":
           setLeft(true);
           break;
-        case 'KeyS':
+        case "KeyS":
           setBackward(true);
           break;
-        case 'KeyD':
+        case "KeyD":
           setRight(true);
           break;
         default:
           break;
       }
-    }
-  
+    };
+
     const onKeyup = (e: KeyboardEvent) => {
       switch (e.code) {
-        case 'KeyW':
+        case "KeyW":
           setForward(false);
           break;
-        case 'KeyA':
+        case "KeyA":
           setLeft(false);
           break;
-        case 'KeyS':
+        case "KeyS":
           setBackward(false);
           break;
-        case 'KeyD':
+        case "KeyD":
           setRight(false);
           break;
         default:
           break;
       }
-    }
-  
-    document.addEventListener('keydown', onKeydown);
-    document.addEventListener('keyup', onKeyup);
+    };
+
+    document.addEventListener("keydown", onKeydown);
+    document.addEventListener("keyup", onKeyup);
 
     return () => {
-      document.removeEventListener('keydown', onKeydown);
-      document.removeEventListener('keyup', onKeyup);
-    }
+      document.removeEventListener("keydown", onKeydown);
+      document.removeEventListener("keyup", onKeyup);
+    };
   }, []);
 
   // ANIMATION LOOP FUNCTION
   const animate = () => {
-    
     const time = performance.now();
 
-    if ( playing ) {
-
+    if (playing) {
       const camera = plControls.current.getObject?.() as Camera;
 
       // calculate intersection w orbs
       if (!exit) {
-
         const intersections = [];
-        
-        for ( const star of starsRef.current.children ) {
-          sphere.set(
-            star.position,
-            star.geometry.boundingSphere!.radius
-          )
+
+        for (const star of starsRef.current.children) {
+          sphere.set(star.position, star.geometry.boundingSphere!.radius);
           if (sphere.containsPoint(camera.position)) intersections.push(star);
         }
 
-        for ( let i = 0; i < intersections.length; i ++ ) {
+        for (let i = 0; i < intersections.length; i++) {
           const star = intersections[i];
           const material = star.material as MeshStandardMaterial;
-          material.color.set( 0xE57065 );
+          material.color.set(0xe57065);
           const uuid = star.uuid;
           getTouchedStars();
           touchedStars.current!.add(uuid);
@@ -212,19 +216,19 @@ const Game = () => {
             setExit(true);
           }
         }
-      } 
-      
+      }
+
       // win condition
       else {
         if (camera.position.y > MAP_HEIGHT) {
           setWin(true);
           timeRef.current.end = new Date().getTime();
           plControls.current.unlock?.();
-        };
+        }
       }
-      
+
       // movement
-      const delta = ( time - prevTime ) / 60;
+      const delta = (time - prevTime) / 60;
       camera.getWorldDirection(direction);
       direction.normalize();
 
@@ -248,8 +252,8 @@ const Game = () => {
       yAxis.set(0, camera.position.y, 0);
 
       // warning if too close to boundary
-      const startColor = new Color(0xFFFFFF);
-      const endColor = new Color(0xFF6242);
+      const startColor = new Color(0xffffff);
+      const endColor = new Color(0xff6242);
       const container = containerRef.current.children[0];
       const material = container.material as MeshBasicMaterial;
 
@@ -269,28 +273,30 @@ const Game = () => {
       }
 
       // show instructions
-      console.log(instructions)
+      console.log(instructions);
       if (camera.position.y > 0) {
         setInstructions(false);
       }
     }
 
     prevTime = time;
-  }
+  };
 
   return (
     <>
       {/* CANVAS */}
-      <Canvas camera={{position: [0, 50, 30]}}>
-        <ambientLight color={0xFFFFFF}/>
-        <Background/>
+      <Canvas camera={{ position: [0, 50, 30] }}>
+        <ambientLight color={0xffffff} />
+        <Background />
 
         <group ref={starsRef}>{loadedStars}</group>
-        <Roof rotate={false}/>
-        { exit && <Exit/> }
-        <group ref={containerRef}><Container/></group>
+        <Roof rotate={false} />
+        {exit && <Exit />}
+        <group ref={containerRef}>
+          <Container />
+        </group>
         <Entry />
-        <Roof rotate={true}/>
+        <Roof rotate={true} />
 
         <OrbitControls
           enabled={menu}
@@ -300,19 +306,19 @@ const Game = () => {
           // maxPolarAngle={ Math.PI * 2 / 3 }
           // minPolarAngle={ Math.PI / 3 }
         />
-        <PointerLockControls ref={plControls} selector={"#btn"}/>
-        <EventListeners/>
-        <Stats/>
+        <PointerLockControls ref={plControls} selector={"#btn"} />
+        <EventListeners />
+        <Stats />
       </Canvas>
 
       {/* OUTSIDE STUFF */}
-      { instructions && playing && <Instructions /> }
-      { menu && <Menu plControls={plControls} /> }
-      { !playing && !win && !menu && <Pause plControls={plControls} /> }
-      { win && <Results onClick={restartGame} times={timeRef} /> }
-      { !playing && <Player />}
+      {instructions && playing && <Instructions />}
+      {menu && <Menu plControls={plControls} />}
+      {!playing && !win && !menu && <Pause plControls={plControls} />}
+      {win && <Results onClick={restartGame} times={timeRef} />}
+      {!playing && <Player />}
     </>
-  )
-}
+  );
+};
 
-export default Game
+export default Game;

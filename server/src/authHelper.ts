@@ -1,14 +1,15 @@
-import { getUserByEmail, getUserByUsername, registerUser, updateToken } from './db';
+import {
+  getUserByEmail,
+  getUserByUsername,
+  registerUser,
+  updateToken,
+} from "./db";
 import crypto from "crypto";
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 
-export {
-  register,
-  login
-}
+export { register, login };
 
 const register = async (username: string, email: string, password: string) => {
-
   // Check if email already used
   let user = await getUserByEmail(email);
   if (user !== null) {
@@ -43,21 +44,20 @@ const register = async (username: string, email: string, password: string) => {
     { email: email },
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: "600s" }
-  )
-  
+  );
+
   // register user
   await registerUser(username, email, hashed, salt, refreshToken);
   return { refreshToken: refreshToken, accessToken: accessToken };
-}
+};
 
 const login = async (email: string, password: string) => {
-
   // user does not exist throw error
   let user = await getUserByEmail(email);
   if (user === null) {
     return { error: "The email provided is not associated with any account" };
   }
-  console.log(user)
+  console.log(user);
   // Get salt
   let salt = user.salt;
 
@@ -84,8 +84,8 @@ const login = async (email: string, password: string) => {
     { email: email },
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: "600s" }
-  )
+  );
 
   await updateToken(refreshToken, email);
   return { refreshToken: refreshToken, accessToken: accessToken };
-}
+};
